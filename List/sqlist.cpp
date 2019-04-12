@@ -11,26 +11,26 @@ typedef struct sqlist
 } sqlist, *Psqlist;                   //顺序表类型
 
 // 初始化线性表
-void initList(sqlist *L)
+void initList (sqlist *L)
 {
     L->n = 0;
 }
 
 // 判断线性表是否为空
-bool isEmptyList(sqlist *L)
+bool isEmptyList (sqlist *L)
 {
     return (L->n == 0);
 }
 
 // 判断线性表是否已满
-bool isFullList(sqlist *L)
+bool isFullList (sqlist *L)
 {
     return (L->n == maxsize);
 }
 
 // 线性表插入数据
 // 将x插入到顺序表L的第i个位置
-int insData(sqlist *L, datatype x,int i) 
+int insData (sqlist *L, datatype x,int i) 
 {
     if (isFullList(L)) {std::cout<<"表满，不能插入！（上溢）\n"; return -1;}
     if (i<1 || i>L->n+1) {std::cout<<"非法插入位置！\n"; return 0;}
@@ -45,7 +45,7 @@ int insData(sqlist *L, datatype x,int i)
 
 // 线性表删除数据
 // 删除第i个位置的元素
-int delData(sqlist *L, int i)
+int delData (sqlist *L, int i)
 {
     if (isEmptyList(L)) {std::cout<<"表空，不能删除！\n"; return -1;}
     if (i<1 || i>L->n+1) {std::cout<<"非法删除位置！\n"; return 0;}
@@ -59,7 +59,7 @@ int delData(sqlist *L, int i)
 }
 
 // 线性表定位元素
-int locData(sqlist *L, datatype x)
+int locData (sqlist *L, datatype x)
 {
     int i = 1;
     while(i <= L->n && L->data[i-1] != x) i++;
@@ -69,7 +69,7 @@ int locData(sqlist *L, datatype x)
 }
 
 // 输出线性表
-void ouputList(sqlist *L)
+void ouputList (sqlist *L)
 {
     if (isEmptyList(L)) return; //表空返回
     for (int i = 0; i < L->n; i++)
@@ -79,7 +79,7 @@ void ouputList(sqlist *L)
 }
 
 // 顺序表中负值位于前面 正值位于后面
-void orderNum(sqlist *L)
+void orderNum (sqlist *L)
 {
     int x; //中间变量
     int i = 0;
@@ -94,6 +94,30 @@ void orderNum(sqlist *L)
             i++;
             j--;
         }
+    }
+}
+
+// 顺序表中删除零点结点 不改变其他结点的相对位置
+void delZero (sqlist *L)
+{
+    int s = 0; // 累计的零元数
+    for (int i = 0; i < L->n; i++)
+    {
+        if (L->data[i] == 0) s++;
+        if (s > 0) L->data[i-s] = L->data[i]; //非零元前移
+    }
+    L->n = L->n-s; //修改表长
+}
+
+// 顺序表各结点逆置
+void inversionNode (sqlist *L)
+{
+    int x; //中间变量
+    for(int i = 0, j = L->n; i < j; i++, j--)
+    {
+        x = L->data[i];
+        L->data[i] = L->data[j];
+        L->data[j] = x;
     }
 }
 
