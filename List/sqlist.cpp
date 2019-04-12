@@ -1,13 +1,13 @@
 #include <iostream>
 
 const int MAXSIZE = 100; // 线性表可能的最大长度 假设为100
-// 创建线性表
-typedef int datatype;    // 线性表节点的数据类型 假设为int
+// 线性表类型定义
+typedef int datatype;    // 节点的数据类型 假设为int
 const int maxsize = MAXSIZE;
 typedef struct sqlist
 {
     datatype data[maxsize]; // 线性表的存储向量 第一个节点是data[0] 若第一个节点是data[1] 则声明为data[maxsize+1]
-    int n;                  // 线性表的当前长度
+    int n;                 // 线性表的当前长度
 } sqlist, *Psqlist;                   //顺序表类型
 
 // 初始化线性表
@@ -121,7 +121,7 @@ void inversionNode (sqlist *L)
     }
 }
 
-int main()
+int main ()
 {
     // 初始化
     sqlist L;
@@ -132,4 +132,8 @@ int main()
     // 删除数据
     delData(&L, 1);
     ouputList(&L);
+
+    // orderNum
+    // delZero
+    // inversionNode
 }
