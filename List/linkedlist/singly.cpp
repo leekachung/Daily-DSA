@@ -104,9 +104,13 @@ int locDataToNum(lklist L, datatype x)
 // 单链表插入数据 已知结点序号
 // 前插 T(n) = O(n) 后插 T(n) = O(1) 
 // 对前插 进行类后插等效处理 即先后插再交换前后结点
-int insDataByNum(lklist head, datatype x, int i, int forb)
+/*
+*   @param int forb front of back 选择前插或后插
+*   @param int i 插入位置
+*/
+int insData(lklist head, datatype x, int i, int forb)
 {
-    pointer p = getData(head, i-1);
+    pointer p = getData(head, i-1); // 找待插入的位置的直接前趋
     if (p == NULL) { // 无第i-1个结点 即 i<1 || i>n+1
         std::cout << "非法插入位置！\n";
         return 0;
@@ -126,6 +130,21 @@ int insDataByNum(lklist head, datatype x, int i, int forb)
         return 1;
     }
     return -1; // 非法forb参数
+}
+
+// 单链表删除数据
+int delData (lklist L, int i)
+{
+    pointer q = getData(L, i-1); // 找待删除的结点的直接前趋
+    if (q != NULL && q->next == NULL) {
+        std::cout << "非法删除位置！\n";
+        return -1;
+    }
+    pointer p;
+    p = q->next; // 保存需删除的结点地址 用于释放空间
+    q->next = p->next; // 若不需要删除原结点 只调整链表结构 p->next->next即可
+    delete p; // 释放已脱离链表的结点
+    return 1;
 }
 
 // 输出单链表
@@ -150,8 +169,8 @@ int main ()
     std::cout << "单链表长度为：" << linkLength(head1) << "\n";
 
     // 定位 按序号查找 返回结点地址
-    int n = 3;
-    std::cout << "第" << n << "个结点是：" << getData(head1, n) << "\n";
+    // int n = 3;
+    // std::cout << "第" << n << "个结点是：" << getData(head1, n) << "\n";
 
     // 定位 按值查找 返回结点地址
     // std::cout << "结点地址为：" << locDataToAddr(head1, '3') << "\n";
@@ -160,9 +179,14 @@ int main ()
     // std::cout << "结点序号为：" << locDataToNum(head1, '3') << "\n";
 
     // 插入数据在结点前
-    // insDataByNum(head1, '6', 3, 0);
+    // insData(head1, '6', 3, 0);
     // 插入数据在结点后
-    // insDataByNum(head1, '6', 3, 1);
+    // insData(head1, '6', 3, 1);
+    // outputList(head1, tail);
+
+    // 删除数据
+    // delData(head1, 2);
+    // outputList(head1, tail);
 
     // std::cout << "-------------- \n";
 
