@@ -132,13 +132,9 @@ int insData(lklist head, datatype x, int i, int forb)
     return -1; // 非法forb参数
 }
 
-// 单链表删除数据
-// 删除结点直接前趋 进行删除结点直接后继等效处理
-/*
-*   @param int iorb i of back 选择删除本结点或删除结点直接后继 0为删除结点直接前趋 1为删除结点直接后继
-*   @param int i 删除位置
-*/
-int delData(lklist L, int i, int iorb)
+// 单链表删除数据 通过寻找结点位置直接前趋结点进行操作
+// 在知道某结点位置的情况 自删 T(n) = O(n)
+int delDataByFindFront(lklist L, int i)
 {
     pointer q = getData(L, i-1); // 找待删除的结点的直接前趋
     if (q != NULL && q->next == NULL) {
@@ -146,24 +142,28 @@ int delData(lklist L, int i, int iorb)
         return -1;
     }
     pointer p;
-    if (iorb == 1)
+    p = q->next;       // 保存需删除的结点地址 用于释放空间
+    q->next = p->next; // 若不需要删除原结点 只调整链表结构 p->next->next即可
+    delete p;          // 释放已脱离链表的结点 不释放已导致内存泄露
+    return 1;
+}
+
+// 单链表删除数据 通过复制结点位置直接后继结点进行操作 不适用待删结点为尾结点
+// 在知道某结点位置的情况 自删 T(n) = O(1) 推荐
+int delDataByCopyBack(lklist L, int i)
+{
+    pointer q = getData(L, i); // 找待删除的结点的位置
+    if (q != NULL && q->next == NULL) //q->next为NULL 无直接后继结点 删除失败
     {
-        // p 充当 q 结点的直接后继
-        p = q->next;       // 保存需删除的结点地址 用于释放空间
-        q->next = p->next; // 若不需要删除原结点 只调整链表结构 p->next->next即可
-        delete p;          // 释放已脱离链表的结点 不释放已导致内存泄露
-        return 1;
+        std::cout << "非法删除位置！\n";
+        return -1;
     }
-    if (iorb == 0)
-    {
-        // p 充当 q 结点的直接前趋
-        q = p->next;
-        p->data = q->data;
-        p->next = q->next;
-        delete q;
-        return 1;
-    }
-    return -1;   // 非法iorb参数
+    pointer p;
+    p = q->next;
+    q->data = p->data;
+    q->next = p->next;
+    delete p;          // 释放已脱离链表的结点 不释放已导致内存泄露
+    return 1;
 }
 
 // 输出单链表
@@ -203,16 +203,12 @@ int main ()
     // insData(head1, '6', 3, 1);
     // outputList(head1, tail);
 
-    // 通过修改i参数 控制删除结点的位置
-    // 删除结点位置的直接前趋结点
-    // delData(head1, 2, 0);
+    // 通过寻找结点位置直接前趋结点进行操作
+    // delDataByFindFront(head1, 2);
     // outputList(head1, tail);
-    // 删除结点位置的结点
-    // delData(head1, 2, 1);
-    // outputList(head1, tail);
-    // 删除结点位置的直接后继结点
-    // delData(head1, 3, 1);
-    // outputList(head1, tail);
+    // 通过复制结点位置直接后继结点进行操作
+    delDataByCopyBack(head1, 2);
+    outputList(head1, tail);
 
     // std::cout << "-------------- \n";
 
