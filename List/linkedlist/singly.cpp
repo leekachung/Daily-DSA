@@ -1,3 +1,6 @@
+/*
+*   各算法除单链表初始化 T(n) = O(1) 「头插法 尾插法不计插入的部分」 其他都是 T(n) = O(1)
+*/
 #include <iostream>
 
 // 单链表类型定义
@@ -13,7 +16,7 @@ typedef pointer lklist; // 单链表类型 即头指针类型
 
 // 尾插法创建单链表 顺序
 // 有头结点 返回表头指针
-lklist tailCreate()
+lklist tailCreate ()
 {
     lklist head; // 语义化的pointer类型 更好说明head是头指针
     pointer rear, s; // 普通指针类型
@@ -87,7 +90,7 @@ pointer locDataToAddr (lklist L, datatype x)
 }
 
 // 定位 按值查找 返回结点序号
-int locDataToNum(lklist L, datatype x)
+int locDataToNum (lklist L, datatype x)
 {
     int j = 0;
     pointer p = L->next;
@@ -108,7 +111,7 @@ int locDataToNum(lklist L, datatype x)
 *   @param int forb front of back 选择前插或后插 0为前 1为后
 *   @param int i 插入位置
 */
-int insData(lklist head, datatype x, int i, int forb)
+int insData (lklist head, datatype x, int i, int forb)
 {
     pointer p = getData(head, i-1); // 找待插入的位置的直接前趋
     if (p == NULL) { // 无第i-1个结点 即 i<1 || i>n+1
@@ -134,7 +137,7 @@ int insData(lklist head, datatype x, int i, int forb)
 
 // 单链表删除数据 通过寻找结点位置直接前趋结点进行操作
 // 在知道某结点位置的情况 自删 T(n) = O(n)
-int delDataByFindFront(lklist L, int i)
+int delDataByFindFront (lklist L, int i)
 {
     pointer q = getData(L, i-1); // 找待删除的结点的直接前趋
     if (q != NULL && q->next == NULL) {
@@ -150,7 +153,7 @@ int delDataByFindFront(lklist L, int i)
 
 // 单链表删除数据 通过复制结点位置直接后继结点进行操作 不适用待删结点为尾结点
 // 在知道某结点位置的情况 自删 T(n) = O(1) 推荐
-int delDataByCopyBack(lklist L, int i)
+int delDataByCopyBack (lklist L, int i)
 {
     pointer q = getData(L, i); // 找待删除的结点的位置
     if (q != NULL && q->next == NULL) //q->next为NULL 无直接后继结点 删除失败
@@ -166,6 +169,18 @@ int delDataByCopyBack(lklist L, int i)
     return 1;
 }
 
+// 单链表销毁
+void destoryList (lklist L)
+{
+    pointer p, q;
+    p = L; // 赋值头结点
+    while(p != NULL){
+        q = p->next;
+        delete p;
+        p = q;
+    }
+}
+
 // 输出单链表
 void outputList(lklist L, char *name)
 {
@@ -179,6 +194,9 @@ void outputList(lklist L, char *name)
 
 int main ()
 {
+    /*
+    *   创建单链表
+    */
     // 尾插法
     lklist head1;
     char tail[] = "尾插法";
@@ -186,7 +204,19 @@ int main ()
     head1 = tailCreate();
     outputList(head1, tail);
     std::cout << "单链表长度为：" << linkLength(head1) << "\n";
+    // std::cout << "-------------- \n";
 
+    // 头插法
+    // lklist head2;
+    // char head[] = "头插法";
+    // std::cout << "请输出" << head << "数据：\n";
+    // head2 = headCreate();
+    // outputList(head2, head);
+    // std::cout << "单链表长度为：" << linkLength(head2) << "\n";
+
+    /*
+    *   操作单链表
+    */
     // 定位 按序号查找 返回结点地址
     // int n = 3;
     // std::cout << "第" << n << "个结点是：" << getData(head1, n) << "\n";
@@ -207,16 +237,9 @@ int main ()
     // delDataByFindFront(head1, 2);
     // outputList(head1, tail);
     // 通过复制结点位置直接后继结点进行操作
-    delDataByCopyBack(head1, 2);
-    outputList(head1, tail);
+    // delDataByCopyBack(head1, 2);
+    // outputList(head1, tail);
 
-    // std::cout << "-------------- \n";
-
-    // 头插法
-    // lklist head2;
-    // char head[] = "头插法";
-    // std::cout << "请输出" << head << "数据：\n";
-    // head2 = headCreate();
-    // outputList(head2, head);
-    // std::cout << "单链表长度为：" << linkLength(head2) << "\n";
+    // 销毁单链表
+    // destoryList(head1);
 }
