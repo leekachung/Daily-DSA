@@ -105,7 +105,7 @@ int locDataToNum(lklist L, datatype x)
 // 前插 T(n) = O(n) 后插 T(n) = O(1) 
 // 对前插 进行类后插等效处理 即先后插再交换前后结点
 /*
-*   @param int forb front of back 选择前插或后插
+*   @param int forb front of back 选择前插或后插 0为前 1为后
 *   @param int i 插入位置
 */
 int insData(lklist head, datatype x, int i, int forb)
@@ -133,7 +133,12 @@ int insData(lklist head, datatype x, int i, int forb)
 }
 
 // 单链表删除数据
-int delData (lklist L, int i)
+// 删除结点直接前趋 进行删除结点直接后继等效处理
+/*
+*   @param int iorb i of back 选择删除本结点或删除结点直接后继 0为删除结点直接前趋 1为删除结点直接后继
+*   @param int i 删除位置
+*/
+int delData(lklist L, int i, int iorb)
 {
     pointer q = getData(L, i-1); // 找待删除的结点的直接前趋
     if (q != NULL && q->next == NULL) {
@@ -141,10 +146,24 @@ int delData (lklist L, int i)
         return -1;
     }
     pointer p;
-    p = q->next; // 保存需删除的结点地址 用于释放空间
-    q->next = p->next; // 若不需要删除原结点 只调整链表结构 p->next->next即可
-    delete p; // 释放已脱离链表的结点
-    return 1;
+    if (iorb == 1)
+    {
+        // p 充当 q 结点的直接后继
+        p = q->next;       // 保存需删除的结点地址 用于释放空间
+        q->next = p->next; // 若不需要删除原结点 只调整链表结构 p->next->next即可
+        delete p;          // 释放已脱离链表的结点 不释放已导致内存泄露
+        return 1;
+    }
+    if (iorb == 0)
+    {
+        // p 充当 q 结点的直接前趋
+        q = p->next;
+        p->data = q->data;
+        p->next = q->next;
+        delete q;
+        return 1;
+    }
+    return -1;   // 非法iorb参数
 }
 
 // 输出单链表
@@ -184,8 +203,15 @@ int main ()
     // insData(head1, '6', 3, 1);
     // outputList(head1, tail);
 
-    // 删除数据
-    // delData(head1, 2);
+    // 通过修改i参数 控制删除结点的位置
+    // 删除结点位置的直接前趋结点
+    // delData(head1, 2, 0);
+    // outputList(head1, tail);
+    // 删除结点位置的结点
+    // delData(head1, 2, 1);
+    // outputList(head1, tail);
+    // 删除结点位置的直接后继结点
+    // delData(head1, 3, 1);
     // outputList(head1, tail);
 
     // std::cout << "-------------- \n";
