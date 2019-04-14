@@ -181,8 +181,8 @@ void destoryList (lklist L)
     }
 }
 
-// 单链表结点就地逆置 S(n) = O(n)
-// 直接扫描链表 将各结点的next指针改为其前趋 递归实现
+// 单链表结点递归逆置 S(n) = O(n)
+// 直接扫描链表 将各结点的next指针改为其前趋
 void reverseListByRecursion(lklist &L)
 {
     pointer p;
