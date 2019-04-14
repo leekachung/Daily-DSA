@@ -181,10 +181,61 @@ void destoryList (lklist L)
     }
 }
 
+// 单链表结点就地逆置 S(n) = O(1)
+// 直接扫描链表 将各结点的next指针改为其前趋 递归实现
+void reverseListByRecursion(lklist &L)
+{
+    pointer p;
+    if (L == NULL || L->next == NULL) return;
+    p = L->next;
+    reverseListByRecursion(p);
+    L->next->next = L;
+    L->next = NULL;
+    L = p;
+}
+
+// 单链表结点就地逆置 S(n) = O(1)
+// 即在原结点上修改 辅助结点空间为O(1) 头插法实现
+void reverseListByHead(lklist L)
+{
+    pointer p, q;
+    p = L->next; //将头结点指向p结点
+    L->next = NULL;
+    while (p != NULL)
+    {
+        q = p->next;
+        p->next = L->next;
+        L->next = p;
+        p = q;
+    }
+    delete p; // 删除辅助结点
+    delete q;
+}
+
+// 单链表结点复制逆置 S(n) = O(n)
+pointer reverseListByCopy(lklist L)
+{
+    // 初始化newList
+    lklist newList;
+    pointer p;
+    newList = new node; // 非常重要的一步！！！
+    newList->data = L->data;
+    newList->next = NULL;
+    // 复制逆置
+    while(L->next != NULL){
+        p = newList->next;
+        newList->next = L->next;
+        L->next = L->next->next;
+        newList->next->next = p;
+    }
+    destoryList(L); // 销毁原来的单链表
+    return newList;
+}
+
 // 输出单链表
 void outputList(lklist L, char *name)
 {
-    std::cout << name << "数据如下";
+    std::cout << name << "数据如下\n";
     while (L)
     {
         std::cout << L->data << "\n";
@@ -242,4 +293,14 @@ int main ()
 
     // 销毁单链表
     // destoryList(head1);
+
+    char reverse[] = "单链表逆置";
+    // 就地逆置单链表
+    reverseListByRecursion(head1);
+    // reverseListByHead(head1);
+    outputList(head1, reverse);
+    // 复制逆置单链表
+    // lklist newlist;
+    // newlist = reverseListByCopy(head1);
+    // outputList(newlist, reverse);
 }
