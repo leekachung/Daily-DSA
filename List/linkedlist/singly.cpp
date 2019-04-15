@@ -33,6 +33,26 @@ lklist tailCreate ()
     return head;
 }
 
+// 尾插法创建单循环链表 顺序
+// 有头结点 返回表头指针
+lklist tailCreateCircular ()
+{
+    lklist head;     // 语义化的pointer类型 更好说明head是头指针
+    pointer rear, s; // 普通指针类型
+    char ch;
+    head = new node; // 生成头结点
+    rear = head;     // 尾指针初值指向头结点
+    while (std::cin >> ch, ch != '$')
+    {                 // 读入结点值 并检测是否为结束符
+        s = new node; // 生成新结点
+        s->data = ch;
+        rear->next = s; // 新结点插入表尾
+        rear = s;       // 尾指针指向新的表尾
+    }
+    rear->next = head;
+    return head;
+}
+
 // 头插法创建单链表 逆序
 // 有头结点 返回表头指针
 lklist headCreate ()
@@ -47,6 +67,32 @@ lklist headCreate ()
         s->data = ch;
         s->next = head->next;
         head->next = s;
+    }
+    return head;
+}
+
+// 头插法创建单循环链表 逆序
+// 有头结点 返回表头指针
+lklist headCreateCircular()
+{
+    lklist head;
+    pointer s, rear;
+    char ch;
+    int i = 0;
+    head = new node;
+    head->next = NULL;
+    rear->next = head;
+    while (std::cin >> ch, ch != '$')
+    {
+        s = new node;
+        s->data = ch;
+        s->next = head->next;
+        head->next = s;
+        if (i == 0) {
+            rear = s;
+            rear->next = head;
+        }
+        i++;
     }
     return head;
 }
@@ -249,12 +295,12 @@ int main ()
     *   创建单链表
     */
     // 尾插法
-    lklist head1;
-    char tail[] = "尾插法";
-    std::cout << "请输出" << tail << "数据：\n";
-    head1 = tailCreate();
-    outputList(head1, tail);
-    std::cout << "单链表长度为：" << linkLength(head1) << "\n";
+    // lklist head1;
+    // char tail[] = "尾插法";
+    // std::cout << "请输出" << tail << "数据：\n";
+    // head1 = tailCreate();
+    // outputList(head1, tail);
+    // std::cout << "单链表长度为：" << linkLength(head1) << "\n";
     // std::cout << "-------------- \n";
 
     // 头插法
@@ -294,13 +340,21 @@ int main ()
     // 销毁单链表
     // destoryList(head1);
 
-    char reverse[] = "单链表逆置";
+    // char reverse[] = "单链表逆置";
     // 就地逆置单链表
-    reverseListByRecursion(head1);
+    // reverseListByRecursion(head1);
     // reverseListByHead(head1);
-    outputList(head1, reverse);
+    // outputList(head1, reverse);
     // 复制逆置单链表
     // lklist newlist;
     // newlist = reverseListByCopy(head1);
     // outputList(newlist, reverse);
+
+    //单循环链表
+    lklist head3;
+    char circular[] = "单循环链表";
+    // head3 = tailCreateCircular();
+    head3 = headCreateCircular();
+    outputList(head3, circular);
+
 }
