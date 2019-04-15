@@ -351,10 +351,9 @@ int main ()
     // outputList(newlist, reverse);
 
     //单循环链表
-    lklist head3;
-    char circular[] = "单循环链表";
+    // lklist head3;
+    // char circular[] = "单循环链表";
     // head3 = tailCreateCircular();
-    head3 = headCreateCircular();
-    outputList(head3, circular);
-
+    // head3 = headCreateCircular();
+    // outputList(head3, circular);
 }
