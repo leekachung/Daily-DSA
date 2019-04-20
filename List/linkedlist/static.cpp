@@ -32,10 +32,31 @@ cursor newnode()
     return p; //返回分配到的结点空间
 }
 
+// 回收结点空间
 void deletenode(cursor p)
 {
     nodepool[p].next = p; //将p所指的结点归还到存储池
     sp = p; // 将释放的结点插入存储池的第一个结点之前
+}
+
+// 定位 按序号查找 返回结点地址
+cursor getData(cursor L, int i)
+{
+    
+}
+
+// 静态链表插入结点
+int insert(cursor L, datatype x, int i)
+{
+    cursor s, q;
+    q = getData(L, i-1); // 找a[i]的前趋结点
+    if (q == NIL) {std::cout << "插入位置非法！\n"; return 0;}
+    s = newnode();
+    if (s == NIL) {std::cout << "空间已满，不得插入！\n"; return -1;}
+    nodepool[s].data = x;
+    nodepool[s].next = nodepool[q].next;
+    nodepool[q].next = s;
+    return 1;
 }
 
 int main ()
